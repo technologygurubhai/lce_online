@@ -4,9 +4,18 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="Keywords" content="Code editor, html editor, JS editor, New editor, HTML, Python, CSS, SQL, JavaScript, How to, PHP, Java, C, C++, C#, jQuery, Bootstrap, Colors, W3.CSS, XML, MySQL, Icons, NodeJS, React, Graphics, Angular, R, AI, Git, Data Science, Code Game, Tutorials, Programming, Web Development">
+    <meta name="Description" content="A better online editor to craete your webpage and export your file. Super Fast editor for you">
+    <meta property="og:image" content="https://lceonline.netlify.app/images/logo.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="436">
+    <meta property="og:image:height" content="228">
+    <meta property="og:description" content="Lce onine is web base online editor for your next project. Explore now your next favourite editor...">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
         <style>
             #editor { 
-                height: 550px;
+                height: 520px;
                 width: 100%;
             }
             .rbtn{
@@ -16,7 +25,7 @@
             }
             iframe{
               width: 100%;
-              height: 550px;
+              height: 520px;
               margin: 0;
               padding: 0;
               overflow: auto;
@@ -24,10 +33,13 @@
             }
             .set{
               display: flex;
-/*              padding: 5px;*/
               width: 100%;
               background-color: #fff;
-/*              margin: 5px 10px;*/
+              border: 2px solid;
+            }
+            .set input{
+              width: 50px;
+
             }
             .set img{
               height: 20px;
@@ -56,10 +68,14 @@
               display: none;
               box-shadow: 10px 0px 10000000px black;
               transition: 0.5s ease-in;
+              z-index: 99999999;
             }
             .set_dialog button{
               width: 100%;
               margin-top: 8px;
+            }
+            .set_dialog input {
+              width: 100%;
             }
         </style>
     <script src="
@@ -70,26 +86,35 @@
     " rel="stylesheet">
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <title>Lce Online Editor</title>
+    <title>LCE online Editor || A web base editor for your next project </title>
   </head>
   <body>
-    <nav class="navbar navbar-dark bg-dark">
-  <span class="navbar-brand mb-0 h1">LCE Online Editor</span>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">Lce Online Editor</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+    </ul>
+  </div>
 </nav>
     <div style="background-color: #212529;" class="container-fluid">
       <div class="set">
         <img onclick="savefile()"src="images/download.png">
         <img onclick="setfun()" src="images/settings.png">
         <img id="run_c" onclick="updateIframe()" src="images/play.png">
-      </div><br>
+      </div>
       <div class="row">
-      <div class="col-sm edi">
+      <div class="col-sm edi resz">
         <div id="editor">
         </div>
       </div>
-      <div class="col-sm">
+      <div class="col-sm resz">
         <iframe id="myframe"></iframe>
       </div>
     </div>
@@ -168,5 +193,8 @@
       }
 
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  
 </html>
