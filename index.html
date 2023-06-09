@@ -88,6 +88,17 @@
             .set_dialog input {
               width: 100%;
             }
+            .image-upload > input
+            {
+                display: none;
+            }
+
+            .image-upload img
+            {
+                width: 40px;
+                height: 20px;
+                cursor: pointer;
+            }
         </style>
     <script src="
     https://cdn.jsdelivr.net/npm/ace-builds@1.20.0/src-min-noconflict/ace.min.js
@@ -123,6 +134,11 @@
         <img onclick="savefile()"src="images/download.png">
         <img onclick="setfun()" src="images/settings.png">
         <img id="run_c" onclick="updateIframe()" src="images/play.png">
+        <input type="file" id="file-input" accept=".html">
+        <label for="file-input">
+            <img src="images/upload.png"/>
+        </label>
+      </div>
       </div>
       <div class="row">
       <div class="col-sm edi resz">
@@ -206,6 +222,23 @@
             delete textBlob;
           }
       }
+    
+    function uploadFile() {
+      const fileInput = document.getElementById('file-input');
+      fileInput.click();
+    }
+
+    document.getElementById('file-input').addEventListener('change', function() {
+      const file = this.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        const contents = e.target.result;
+        editor.setValue(contents);
+      };
+
+      reader.readAsText(file);
+    });
 
   </script>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
