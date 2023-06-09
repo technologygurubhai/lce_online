@@ -157,11 +157,17 @@
       </div>
       <div>
         <p>Font Size</p>
-        <input value="19" type="number" id="f_size">
+        <input value="15" type="number" id="f_size">
         <p>Choose mode</p>
         <select id="theme_n">
-          <option value="monokai">monokai</option>
-          <option value="chrome">chrome</option>
+          <option value="dracula">Dracula</option>
+          <option value="github">Github</option>
+          <option value="solarized_light">Solarized Light</option>
+          <option value="iplastic">Iplastic</option>
+          <option value="clouds">Clouds</option>
+          <option value="monokai">Monokai</option>
+          <option value="chrome">Chrome</option>
+          <option value="pastel_on_dark">Pastel On Dark</option>
         </select>
         <br>
       </div>
@@ -172,9 +178,9 @@
   </body>
   <script>
       var editor = ace.edit("editor");
-      editor.setTheme("ace/theme/monokai");
+      editor.setTheme("ace/theme/dracula");
       editor.session.setMode("ace/mode/html");
-      document.getElementById('editor').style.fontSize='20px';
+      document.getElementById('editor').style.fontSize='15px';
       function mf() {
         alert(editor.getValue());
       }
