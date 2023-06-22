@@ -148,7 +148,9 @@
             <input type="file" id="file-input" accept=".html">
           </span>
           <span>
-            <i class="material-icons" style="font-size:34px;" onclick="updateIframe()">output</i>
+            <i class="material-icons" style="font-size:34px;" onclick="updateIframe()">
+              <a href="#output_win">output</a>
+            </i>
           </span>
           <span>
             <i class="material-icons" style="font-size:34px;">
@@ -168,7 +170,7 @@
         <div id="editor">
         </div>
       </div>
-      <div class="col-sm resz">
+      <div class="col-sm resz" id="output_win">
         <iframe id="myframe"></iframe>
       </div>
     </div>
