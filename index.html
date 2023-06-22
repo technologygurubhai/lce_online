@@ -117,6 +117,36 @@
             transition:0.3s linear;
             animation: mymove 2s once;
         }
+          .asistent{
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            height: 100vh;
+            width: 50%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: saturate(180%) blur(10px);
+            transition: margin-right .10s;
+            display: none;
+        }
+        .asistent h2{
+
+            background: linear-gradient(to right, #f32170,
+                    #ff6b08, #cf23cf, #eedd44);
+            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text;
+        }
+        .ass_foot{
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          padding: 10px;
+        }
+        .ass_body{
+          height: 80%;
+          padding: 10px;
+          overflow: auto;
+        }
         </style>
     <script src="
     https://cdn.jsdelivr.net/npm/ace-builds@1.20.0/src-min-noconflict/ace.min.js
@@ -201,6 +231,19 @@
         <button class="btn btn-primary" onclick="save_fun()">Save</button>
       </div>
     </div>
+
+    <div class="asistent" id="asistent">
+      <h2 class="text-center text-white">
+        K Power Asistent
+      </h2>
+      <div class="ass_body py-3 text-white">
+        <p>Here you found some links which is may be importent for your projet.<br> Coming Soon....</p>
+      </div>
+      <div class="ass_foot">
+        <button onclick="closeass()" class="btn btn-outline-primary btn-lg btn-block">Colse Assistent</button>
+      </div>
+    </div>
+    
   </body>
   <script>
       var editor = ace.edit("editor");
@@ -271,6 +314,14 @@
 
       reader.readAsText(file);
     });
+
+          function openass() {
+        document.getElementById('asistent').style.display = "block"
+      }
+
+    function closeass() {
+      document.getElementById('asistent').style.display = "none"
+    }
 
   </script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
