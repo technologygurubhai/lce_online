@@ -25,25 +25,27 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
         <style>
-            #editor { 
-                height: 520px;
-                width: 100%;
-                resize: horizontal;
-            }
-            .rbtn{
-              position: fixed;
-              right: 10px;
-              bottom: 10px;
-            }
-            iframe{
-              width: 100%;
-              height: 520px;
-              margin: 0;
-              padding: 0;
-              overflow: auto;
-              background-color: #fff;
-              resize: horizontal;
-            }
+            #editor {
+      height: 83vh;
+      width: 100%;
+      resize: horizontal;
+    }
+
+    .rbtn {
+      position: fixed;
+      right: 10px;
+      bottom: 10px;
+    }
+
+    iframe {
+      width: 100%;
+      height: 83vh;
+      margin: 0;
+      padding: 0;
+      overflow: auto;
+      background-color: #fff;
+      resize: horizontal;
+    }
             .set{
               display: flex;
               width: 100%;
@@ -193,9 +195,9 @@
               <a href="https://kpower.netlify.app/aboutus.html">info</a>
             </i>
           </span>
-          <!--<span>
-            <i class="material-icons" style="font-size:34px;" onclick="openass()">apps</i>
-          </span>-->
+         <span>
+      <i class="material-icons" id="move_down" style="font-size:34px;" onclick="ori()">move_down</i>
+    </span>
       </nav>
     
     <div style="background-color: #212529;" class="container-fluid">
@@ -246,6 +248,19 @@
         <button onclick="closeass()" class="btn btn-outline-primary btn-lg btn-block">Colse Assistent</button>
       </div>
     </div>
+
+    <footer class="bg-dark text-white p-3">
+    <div class="chose">
+      <span>Chose Your language : </span>
+      <select onchange="chagepage()" name="mode" id="mode">
+        <option value="html">HTML,CSS and JS</option>
+        <option value="php">PHP</option>
+      </select>
+    </div>
+    <span>
+      <i class="material-icons bg-dark" style="font-size:34px;" onclick="ori_rv()" id="foot">move_up</i>
+    </span>
+  </footer>
     
   </body>
   <script>
@@ -325,6 +340,21 @@
     function closeass() {
       document.getElementById('asistent').style.display = "none"
     }
+    function chagepage() {
+    window.location.replace("https://kpowereditor.000webhostapp.com/");
+  }
+  function ori() {
+    document.getElementById('myframe').style.width = "97vw";
+    document.getElementById('foot').style.position = "fixed";
+    document.getElementById('foot').style.bottom = "5px";
+    document.getElementById('foot').style.right = "5px";
+    document.getElementById('foot').style.display = "block";
+  }
+  function ori_rv() {
+    document.getElementById('myframe').style.width = "100%";
+    document.getElementById('myframe').style.width = "100%";
+    document.getElementById('foot').style.display = "none";
+  }
 
   </script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
