@@ -224,7 +224,7 @@
         <div class="form-check">
           <input class="form-check-input" type="checkbox" id="myCheck" onclick="theme_update()">
           <label class="form-check-label" id="n_plate" for="flexCheckIndeterminate">
-            Enabe Dark Mode
+            
           </label>
         </div>
         <div class="row">
@@ -395,10 +395,24 @@
       if (checkBox.checked == true){
         text.innerHTML = "Disable Dark Mode";
         bdy.setAttribute("data-bs-theme", "dark");
+        localStorage.setItem("main_theme","dark");
       } else {
          text.innerHTML = "Enable Dark Mode";
          bdy.setAttribute("data-bs-theme", "light");
+         localStorage.setItem("main_theme","light");
       }
+    }
+    var main_theme = localStorage.getItem("main_theme");
+    var bdy = document.getElementById("main_body");
+    if (localStorage.getItem("main_theme")== "dark") {
+        bdy.setAttribute("data-bs-theme", "dark");
+        document.getElementById("myCheck").checked = true;
+        document.getElementById("n_plate").innerHTML = "Disable Dark Mode";
+    }
+    else{
+        bdy.setAttribute("data-bs-theme", "light");
+        document.getElementById("myCheck").checked = true;
+        document.getElementById("n_plate").innerHTML = "Enable Dark Mode";
     }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
