@@ -11,6 +11,11 @@
         toolbar: 'Basic',
         height: 300
     });
+    var editor = CKEDITOR.instances.editor; // Replace 'editor' with the ID of your textarea
+
+        // Set the raw HTML content using setData
+        var rawHtml = '<h1>This is the new content in source mode.</h1>';
+        editor.setData(rawHtml);
 </script>
 
 </body>
