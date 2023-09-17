@@ -1,6 +1,54 @@
-<object
-        data='https://pdfjs-express.s3-us-west-2.amazonaws.com/docs/choosing-a-pdf-viewer.pdf'
-        type="application/pdf"
-        width="600"
-        height="678"
-      />
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PDF Viewer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+</head>
+<body>
+    <div id="pdfViewer"></div>
+
+    <script>
+        // Get the URL parameter named "file"
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        // Get the PDF file URL from the "file" query parameter
+        const pdfUrl = getUrlParameter('file');
+
+        // Get a reference to the container element
+        const pdfContainer = document.getElementById('pdfViewer');
+
+        // Initialize the PDF.js viewer
+        pdfjsLib.getDocument(pdfUrl).promise.then(function (pdfDoc) {
+            // Loop through each page in the PDF
+            for (let pageNum = 1; pageNum <= pdfDoc.numPages; pageNum++) {
+                // Create a canvas element for each page
+                const canvas = document.createElement('canvas');
+                canvas.className = 'pdf-page';
+                pdfContainer.appendChild(canvas);
+
+                // Render the page on the canvas
+                pdfDoc.getPage(pageNum).then(function (page) {
+                    const scale = 1.5; // You can adjust the scale as needed
+                    const viewport = page.getViewport({ scale });
+
+                    const context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+
+                    const renderContext = {
+                        canvasContext: context,
+                        viewport: viewport,
+                    };
+
+                    page.render(renderContext);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
