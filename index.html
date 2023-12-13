@@ -3,7 +3,7 @@
 
 <head>
     <meta name="google-site-verification" content="92VT6by5hhKsIa1kXCOGmMVdCiGYSh0LF0l5pQFyu3o" />
-    <title>OnRoad HTML Editor (2.0) | Online HTML CSS Editor || OnRoad HTML the next editor.</title>
+    <title>OnRoad HTML Editor (3.0) | Online HTML CSS Editor || OnRoad HTML the next editor.</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="Keywords"
@@ -107,6 +107,7 @@
         .li>input {
             display: none;
         }
+
         .asistent {
             position: absolute;
             right: 0;
@@ -155,6 +156,57 @@
         a {
             cursor: pointer;
         }
+
+        .nav svg {
+            cursor: pointer;
+            display: none;
+
+        }
+
+        .main_alg {
+            display: flex;
+        }
+
+        .left {
+            width: 50px;
+            background-color: #040D12;
+            text-align: center;
+        }
+
+        .left i {
+            margin-top: 10px;
+            cursor: pointer;
+            transition: 0.3s linear;
+            color: #d1d1d1d1;
+        }
+
+        .left i:hover {
+            color: white;
+        }
+
+        .left h6 {
+            font-size: 7px;
+            margin-top: -8px;
+            text-wrap: nowrap;
+            text-align: center;
+            color: #fff;
+        }
+
+        .right {
+            width: 100%;
+        }
+        .offcanvas-body ul li{
+            cursor: pointer;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .left{
+                display: none;
+            }
+            .nav svg{
+                display: block;
+            }
+        }
     </style>
     <link href="https://cdn.jsdelivr.net/npm/ace-builds@1.20.0/css/ace.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" type="text/javascript"
@@ -168,100 +220,121 @@
 </head>
 
 <body id="main_body">
+    <div class="main_alg">
+        <div class="left p-2">
+            <label for="file-input">
+                <i class="material-icons" id="move_down" style="font-size:32px;">upload</i>
+            </label>
+            <h6>Upload</h6>
+            <input style="display:none;" class="inpt" type="file" id="file-input" accept=".html">
 
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand">ORHTML</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+            <i class="material-icons" id="move_down" style="font-size:26px;" onclick="savefile()">download</i>
+            <h6>Download</h6>
+
+            <i class="material-icons" id="move_down" style="font-size:26px;" onclick="setfun()">settings</i>
+            <h6>Settings</h6>
+
+            <i class="material-icons" id="move_down" style="font-size:26px;" onclick="ori()">move_down</i>
+            <h6>Move Down</h6>
+
+
+            <i class="material-icons" id="move_down" style="font-size:26px;" onclick="ori_rv()">move_up</i>
+            <h6>Move Up</h6>
+        </div>
+        <div class="right">
+            <div class="nav p-1">
+                <svg data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"
+                    xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-list m-1"
+                    viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
+                </svg>
+                <h6 class="mx-2 my-1">OnRoad Html</h6>
+            </div>
+
+            <button onclick="updateIframe()" class="btn btn-success run_btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="white " class="bi bi-play-fill"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" />
+                </svg>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Files
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <label class="dropdown-item" for="file-input">
-                                    <a for="file-input">Open File</a>
-                                </label>
-                                <input style="display:none;" class="inpt" type="file" id="file-input" accept=".html">
-                            </li>
-                            <li><a class="dropdown-item" onclick="savefile()">Save File</a></li>
-                            <li><a class="dropdown-item" onclick="setfun()">Settings</a></li>
-                        </ul>
-                    </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="aboutus.html">About Us</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="contact.html">Contact US</a>
-                    </li>
-                </ul>
-                <div class="d-flex" role="search">
-                    <button class="btn btn-outline-primary" onclick="ori()" id="down_arrow"><span>
-                    <i class="material-icons" id="move_down" style="font-size:26px;" onclick="ori()">move_down</i>
-                  </span></button>
-                  </div>
+            <!-- <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
+        aria-controls="offcanvasExample">
+        Button with data-bs-target
+    </button> -->
+
+            <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
+                aria-labelledby="offcanvasExampleLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Options</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="list-group list-group-flush">
+                        <input style="display:none;" class="inpt" type="file" id="file-input" accept=".html">
+                        <label for="file-input">
+                        <li class="list-group-item m-1" style="display: flex;"><i class="material-icons mx-2" style="font-size:32px;">upload</i>
+                             Upload Code </li></label>
+                        <li class="list-group-item m-1" style="display: flex;" onclick="savefile()"><i class="material-icons mx-2" style="font-size:32px;">download</i> Download Code</li>
+                        <li class="list-group-item m-1" style="display: flex;" onclick="setfun()"><i class="material-icons mx-2" style="font-size:32px;">settings</i> Settings</li>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </nav>
-
-    <button onclick="updateIframe()" class="btn btn-success run_btn">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="white " class="bi bi-play-fill"
-            viewBox="0 0 16 16">
-            <path
-                d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" />
-        </svg>
-    </button>
 
 
-    <div class="container-fluid p-2 bg-body-secondary">
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="myCheck" onclick="theme_update()">
-          <label class="form-check-label" id="n_plate" for="myCheck">
-            
-          </label>
-        </div>
-        <div class="row">
-            <div class="col-sm edi resz">
-                <div id="editor"></div>
+            <div class="container-fluid p-2 bg-body-secondary">
+                <!-- <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="myCheck" onclick="theme_update()">
+                    <label class="form-check-label" id="n_plate" for="myCheck">
+
+                    </label>
+                </div> -->
+                <div class="row">
+                    <div class="col-sm edi resz">
+                        <div id="editor"></div>
+                    </div>
+                    <div class="col-sm resz" id="output_win">
+                        <iframe id="myframe"></iframe>
+                    </div>
+                </div>
             </div>
-            <div class="col-sm resz" id="output_win">
-                <iframe id="myframe"></iframe>
+
+            <div id="s_dialog" class="set_dialog">
+                <div>
+                    <h2>Settings</h2>
+                </div>
+                <div>
+                    <p>Font Size</p>
+                    <input class="form-control" value="15" type="number" id="f_size" />
+                    <p>Choose mode</p>
+                    <select class="form-control" id="theme_n">
+                        <option value="dracula">Dracula</option>
+                        <option value="github">Github</option>
+                        <option value="solarized_light">Solarized Light</option>
+                        <option value="iplastic">Iplastic</option>
+                        <option value="clouds">Clouds</option>
+                        <option value="monokai">Monokai</option>
+                        <option value="chrome">Chrome</option>
+                        <option value="pastel_on_dark">Pastel On Dark</option>
+                    </select>
+                    <br />
+                </div>
+                <div class="form-check">
+                    <input style="height: 15px; width: 15px;" class="form-check-input" type="checkbox" id="myCheck" onclick="theme_update()">
+                    <label class="form-check-label" id="n_plate" for="myCheck">
+
+                    </label>
+                </div>
+
+                
+                <div>
+                    <button class="btn btn-primary" onclick="save_fun()">Save</button>
+                </div>
             </div>
         </div>
     </div>
-
-    <div id="s_dialog" class="set_dialog">
-        <div>
-            <h2>Settings</h2>
-        </div>
-        <div>
-            <p>Font Size</p>
-            <input class="form-control" value="15" type="number" id="f_size" />
-            <p>Choose mode</p>
-            <select class="form-control" id="theme_n">
-                <option value="dracula">Dracula</option>
-                <option value="github">Github</option>
-                <option value="solarized_light">Solarized Light</option>
-                <option value="iplastic">Iplastic</option>
-                <option value="clouds">Clouds</option>
-                <option value="monokai">Monokai</option>
-                <option value="chrome">Chrome</option>
-                <option value="pastel_on_dark">Pastel On Dark</option>
-            </select>
-            <br />
-        </div>
-        <div>
-            <button class="btn btn-primary" onclick="save_fun()">Save</button>
-        </div>
-    </div>
-
     <div class="p-3">
         <div class="chose">
             <span>Chose Your language : </span>
@@ -272,16 +345,17 @@
         </div>
         <button class="btn btn-outline-success foot" id="foot" onclick="ori_rv()">
             <span>
-            <i class="material-icons" style="font-size: 26px;" onclick="ori_rv()" >move_up</i>
-        </span>
+                <i class="material-icons" style="font-size: 26px;">move_up</i>
+            </span>
         </button>
     </div>
     <hr>
     <footer class="py-3 my-4">
         <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-            <li class="nav-item"><a href="https://onroadhtml.netlify.app/" class="nav-link px-2 text-muted">Home</a></li>
-            <li class="nav-item"><a href="contact.html" class="nav-link px-2 text-muted">Contact Us</a></li>
-            <li class="nav-item"><a href="aboutus.html" class="nav-link px-2 text-muted">About</a></li>
+            <li class="nav-item"><a href="https://onroadhtml.netlify.app/" class="nav-link px-2 text-muted">Home</a>
+            </li>
+            <li class="nav-item"><a class='nav-link px-2 text-muted' href='/contact'>Contact Us</a></li>
+            <li class="nav-item"><a class='nav-link px-2 text-muted' href='/aboutus'>About</a></li>
         </ul>
         <p class="text-center text-muted">&copy; 2023 OnRoadHtml</p>
     </footer>
@@ -373,43 +447,37 @@
     }
     function ori() {
         document.getElementById("myframe").style.width = "97vw";
-        document.getElementById("foot").style.position = "fixed";
-        document.getElementById("foot").style.bottom = "15px";
-        document.getElementById("foot").style.left = "15px";
-        document.getElementById("foot").style.display = "block";
-        document.getElementById("down_arrow").style.display = "none";
     }
     function ori_rv() {
         document.getElementById("myframe").style.width = "100%";
         document.getElementById("myframe").style.width = "100%";
         document.getElementById("down_arrow").style.display = "block";
-        document.getElementById("foot").style.display = "none";
     }
 
     document.getElementById("foot").style.display = "none";
-    
+
     function theme_update() {
-      var checkBox = document.getElementById("myCheck");
-      var text = document.getElementById("n_plate");
-      var bdy = document.getElementById("main_body");
-      if (checkBox.checked == true){
-        text.innerHTML = "Disable Dark Mode";
-        bdy.setAttribute("data-bs-theme", "dark");
-        localStorage.setItem("main_theme","dark");
-      } else {
-         text.innerHTML = "Enable Dark Mode";
-         bdy.setAttribute("data-bs-theme", "light");
-         localStorage.setItem("main_theme","light");
-      }
+        var checkBox = document.getElementById("myCheck");
+        var text = document.getElementById("n_plate");
+        var bdy = document.getElementById("main_body");
+        if (checkBox.checked == true) {
+            text.innerHTML = "Disable Dark Mode";
+            bdy.setAttribute("data-bs-theme", "dark");
+            localStorage.setItem("main_theme", "dark");
+        } else {
+            text.innerHTML = "Enable Dark Mode";
+            bdy.setAttribute("data-bs-theme", "light");
+            localStorage.setItem("main_theme", "light");
+        }
     }
     var main_theme = localStorage.getItem("main_theme");
     var bdy = document.getElementById("main_body");
-    if (localStorage.getItem("main_theme")== "dark") {
+    if (localStorage.getItem("main_theme") == "dark") {
         bdy.setAttribute("data-bs-theme", "dark");
         document.getElementById("myCheck").checked = true;
         document.getElementById("n_plate").innerHTML = "Disable Dark Mode";
     }
-    else{
+    else {
         bdy.setAttribute("data-bs-theme", "light");
         document.getElementById("myCheck").checked = false;
         document.getElementById("n_plate").innerHTML = "Enable Dark Mode";
