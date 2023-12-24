@@ -3,134 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Custom Excel Viewer</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f5f5f5;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
+    <title>Styled Excel Viewer with Bootstrap</title>
 
-        #excelViewer {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            text-align: center;
-            overflow: hidden;
-        }
-
-        #excelFileInput {
-            display: none;
-        }
-
-        label {
-            background-color: #3498db;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        label:hover {
-            background-color: #2980b9;
-        }
-
-        #excelData {
-            margin-top: 20px;
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 60px; /* Added margin-top */
-        }
-
-        th, td {
-            padding: 12px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-
-        th {
-            background-color: #3498db;
-            color: #fff;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        tr:hover {
-            background-color: #e0e0e0;
-        }
-        nav{
-            background-color: crimson;
-            height: 50px;
-            width: 100%;
-            position: fixed;
-            top: 0;
-            left: 0%;
-        }
-    </style>
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <!-- <nav></nav> -->
+    <nav class="navbar navbar-light bg-light">
+        <form class="form-inline">
+            <input class="form-control mr-sm-2" type="text" id="searchInput" placeholder="Search...">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="searchTable()">Search</button>
+        </form>
+    </nav>
 
-    <div id="excelViewer">
-        <label for="excelFileInput" id="fileLabel">Choose an Excel File</label>
-        <input type="file" id="excelFileInput" accept=".xls, .xlsx" onchange="loadExcelFile()">
-        <div id="excelData"></div>
+    <div class="container mt-4">
+        <div id="excelData" class="mt-3">
+            <!-- Add Bootstrap table-responsive class -->
+            <div class="table-responsive">
+                <table id="excelDataTable" class="table table-bordered table-striped table-hover">
+                    <!-- Table headers will be dynamically generated here -->
+                    <thead class="thead-dark">
+                    </thead>
+                    <tbody>
+                        <!-- Table content will be dynamically generated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
+
+    <!-- Add Bootstrap JS and Popper.js (required for some Bootstrap components) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
     <script>
-        function loadExcelFile() {
-            const input = document.getElementById('excelFileInput');
-            const excelDataDiv = document.getElementById('excelData');
-            const fileLabel = document.getElementById('fileLabel');
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            const regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
 
-            const file = input.files[0];
+        function loadExcelFileFromParameter() {
+            const filePathFromURL = getParameterByName('file', window.location.href);
+            if (filePathFromURL) {
+                // Load the Excel file using the specified file path
+                loadExcelFile(filePathFromURL);
+            } else {
+                console.error('File parameter not found in the URL.');
+            }
+        }
 
-            if (file) {
-                const reader = new FileReader();
-
-                reader.onload = function (e) {
-                    const data = new Uint8Array(e.target.result);
+        function loadExcelFile(filePath) {
+            fetch(filePath)
+                .then(response => response.arrayBuffer())
+                .then(data => {
                     const workbook = XLSX.read(data, { type: 'array' });
 
                     // Assuming only one sheet in the workbook
                     const sheetName = workbook.SheetNames[0];
                     const sheet = workbook.Sheets[sheetName];
 
-                    // Convert sheet data to HTML table
-                    const htmlTable = XLSX.utils.sheet_to_html(sheet);
-                    excelDataDiv.innerHTML = htmlTable;
+                    // Extract headers and data
+                    const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
-                    // Hide the file input and label
-                    input.style.display = 'none';
-                    fileLabel.style.display = 'none';
-                };
+                    if (jsonData.length > 0) {
+                        const headers = Object.keys(jsonData[0]);
 
-                reader.readAsArrayBuffer(file);
-            }
+                        // Create table header row
+                        const thead = document.querySelector('#excelDataTable thead');
+                        thead.innerHTML = '<tr>' + headers.map(header => `<th>${header}</th>`).join('') + '</tr>';
+
+                        // Create table body rows
+                        const tbody = document.querySelector('#excelDataTable tbody');
+                        tbody.innerHTML = jsonData.map(row => {
+                            return '<tr>' + headers.map(header => `<td>${row[header] || ''}</td>`).join('') + '</tr>';
+                        }).join('');
+
+                        // Show the table
+                        document.getElementById('excelData').style.display = 'block';
+                    } else {
+                        // Handle the case when there is no data
+                        document.getElementById('excelData').style.display = 'none';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading Excel file:', error);
+                });
         }
 
-        // Check if there is a file parameter in the URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const fileParam = urlParams.get('file');
-
-        if (fileParam) {
-            // Load the specified file if the parameter is present
-            document.getElementById('excelFileInput').value = ''; // Clear the file input
-            loadExcelFile();
-        }
+        // Load the Excel file when the page loads
+        window.onload = loadExcelFileFromParameter;
     </script>
 </body>
 </html>
