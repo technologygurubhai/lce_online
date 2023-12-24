@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Styled Excel Viewer with Bootstrap</title>
+
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-light bg-light">
+        <form class="form-inline">
+            <input class="form-control mr-sm-2" type="text" id="searchInput" placeholder="Search...">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="searchTable()">Search</button>
+        </form>
+    </nav>
+
+    <div class="container mt-4">
+        <label for="excelFileInput">Choose an Excel File</label>
+        <input type="file" id="excelFileInput" accept=".xls, .xlsx" class="form-control-file" onchange="loadExcelFile()">
+        <div id="excelData" class="mt-3 table-responsive">
+            <table id="excelDataTable" class="table table-bordered table-striped table-hover">
+                <!-- Table headers will be dynamically generated here -->
+                <thead class="thead-dark">
+                </thead>
+                <tbody>
+                    <!-- Table content will be dynamically generated here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Add Bootstrap JS and Popper.js (required for some Bootstrap components) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+<script>
+    function loadExcelFile() {
+        const input = document.getElementById('excelFileInput');
+        const excelDataTable = document.getElementById('excelDataTable');
+        const excelDataDiv = document.getElementById('excelData');
+
+        const file = input.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+
+                // Assuming only one sheet in the workbook
+                const sheetName = workbook.SheetNames[0];
+                const sheet = workbook.Sheets[sheetName];
+
+                // Extract headers and data
+                const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+                if (jsonData.length > 0) {
+                    const headers = Object.keys(jsonData[0]);
+
+                    // Create table header row
+                    const thead = document.querySelector('#excelDataTable thead');
+                    thead.innerHTML = '<tr>' + headers.map(header => `<th>${header}</th>`).join('') + '</tr>';
+
+                    // Create table body rows
+                    const tbody = document.querySelector('#excelDataTable tbody');
+                    tbody.innerHTML = jsonData.map(row => {
+                        return '<tr>' + headers.map(header => `<td>${row[header] || ''}</td>`).join('') + '</tr>';
+                    }).join('');
+
+                    // Show the table
+                    excelDataDiv.style.display = 'block';
+                } else {
+                    // Handle the case when there is no data
+                    excelDataDiv.style.display = 'none';
+                }
+            };
+
+            reader.readAsArrayBuffer(file);
+        }
+    }
+
+    function searchTable() {
+        const searchInput = document.getElementById('searchInput');
+        const filter = searchInput.value.toUpperCase();
+        const table = document.getElementById('excelDataTable');
+        const rows = table.getElementsByTagName('tr');
+
+        for (let i = 0; i < rows.length; i++) {
+            const cells = rows[i].getElementsByTagName('td');
+            let found = false;
+
+            for (let j = 0; j < cells.length; j++) {
+                const cellValue = cells[j].textContent || cells[j].innerText;
+
+                if (cellValue.toUpperCase().indexOf(filter) > -1) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (found) {
+                rows[i].style.display = '';
+            } else {
+                rows[i].style.display = 'none';
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
