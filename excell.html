@@ -9,13 +9,6 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <nav class="navbar navbar-light bg-light">
-        <form class="form-inline">
-            <input class="form-control mr-sm-2" type="text" id="searchInput" placeholder="Search...">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="searchTable()">Search</button>
-        </form>
-    </nav>
-
     <div class=" mt-4">
         <label for="excelFileInput">Choose an Excel File</label>
         <input type="file" id="excelFileInput" accept=".xls, .xlsx" class="form-control-file" onchange="loadExcelFile()">
