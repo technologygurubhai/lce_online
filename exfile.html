@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Excel Viewer</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        #excelViewer {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        #excelFileInput {
+            display: none;
+        }
+
+        label {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        label:hover {
+            background-color: #2980b9;
+        }
+
+        #excelData {
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 60px; /* Added margin-top */
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #e0e0e0;
+        }
+        nav{
+            background-color: crimson;
+            height: 50px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0%;
+        }
+    </style>
+</head>
+<body>
+    <!-- <nav></nav> -->
+
+    <div id="excelViewer">
+        <label for="excelFileInput" id="fileLabel">Choose an Excel File</label>
+        <input type="file" id="excelFileInput" accept=".xls, .xlsx" onchange="loadExcelFile()">
+        <div id="excelData"></div>
+    </div>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+    <script>
+        function loadExcelFile() {
+            const input = document.getElementById('excelFileInput');
+            const excelDataDiv = document.getElementById('excelData');
+            const fileLabel = document.getElementById('fileLabel');
+
+            const file = input.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+
+                    // Assuming only one sheet in the workbook
+                    const sheetName = workbook.SheetNames[0];
+                    const sheet = workbook.Sheets[sheetName];
+
+                    // Convert sheet data to HTML table
+                    const htmlTable = XLSX.utils.sheet_to_html(sheet);
+                    excelDataDiv.innerHTML = htmlTable;
+
+                    // Hide the file input and label
+                    input.style.display = 'none';
+                    fileLabel.style.display = 'none';
+                };
+
+                reader.readAsArrayBuffer(file);
+            }
+        }
+
+        // Check if there is a file parameter in the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const fileParam = urlParams.get('file');
+
+        if (fileParam) {
+            // Load the specified file if the parameter is present
+            document.getElementById('excelFileInput').value = ''; // Clear the file input
+            loadExcelFile();
+        }
+    </script>
+</body>
+</html>
