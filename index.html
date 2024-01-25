@@ -158,6 +158,7 @@
             cursor: pointer;
         }
 
+
         .nav svg {
             cursor: pointer;
             display: none;
@@ -208,13 +209,19 @@
             .left{
                 display: none;
             }
-            .nav{
-                postion:fixed;
-                top:0;
-                left:0;
+            .right .nav{
+                position:fixed;
+                top:0px;
+                left:0px;
                 width:100%;
-                
+                z-index: 999999999999;
+                background-color: #131517;
+                color: #fff;
             }
+            #editor{
+                margin-top: 50px;
+            }
+
             .nav svg{
                 display: block;
             }
@@ -278,7 +285,7 @@
     </button> -->
 
             <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
-                aria-labelledby="offcanvasExampleLabel">
+                aria-labelledby="offcanvasExampleLabel"><br><br>
                 <div class="offcanvas-header">
                     <h5 class="offcanvas-title" id="offcanvasExampleLabel">Options</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
