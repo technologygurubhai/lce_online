@@ -30,6 +30,21 @@
             height: 85vh;
             width: 100%;
             resize: horizontal;
+/*            display: block;*/
+        }
+
+        #editorcss {
+            height: 85vh;
+            width: 100%;
+            resize: horizontal;
+/*            display: none;*/
+        }
+
+        #editorjs {
+            height: 85vh;
+            width: 100%;
+            resize: horizontal;
+/*            display: none;*/
         }
 
         .rbtn {
@@ -107,6 +122,10 @@
 
         .li>input {
             display: none;
+        }
+        
+        .run:hover{
+            color: green;
         }
 
         .asistent {
@@ -204,12 +223,25 @@
         .offcanvas-body ul li{
             cursor: pointer;
         }
+        .bc{
+            display: none;
+        }
+        .run_desk{
+            display: block;
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            color: #fff;
+        }
+        .run{
+            display: none;
+        }
 
         @media only screen and (max-width: 600px) {
             .left{
                 display: none;
             }
-            .right .nav{
+            /*.right .nav{
                 position:fixed;
                 top:0px;
                 left:0px;
@@ -217,14 +249,38 @@
                 z-index: 999999999999;
                 background-color: #131517;
                 color: #fff;
+            }*/
+            .bc{
+                display: block;
             }
-            #editor{
-                margin-top: 50px;
+            .run{
+                position: fixed;
+                top: 15px;
+                right: 15px;
+                display: block;
+            }
+            .run_desk{
+                display: none;
+            }
+            .nav-tabs{
+/*                margin-top: 50px;*/
+
+            }
+            #editorjs #editorcss #editor{
+                /*position: absolute;
+                margin-top: 200px;*/
             }
 
             .nav svg{
                 display: block;
             }
+            #output_win{
+                display: none;
+            }
+        }
+        .d-flex .btn{
+            height: 35px;
+            padding: 5px 12px;
         }
     </style>
     <link href="https://cdn.jsdelivr.net/npm/ace-builds@1.20.0/css/ace.min.css" rel="stylesheet" />
@@ -269,15 +325,20 @@
                         d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
                 </svg>
                 <h4 class="mx-2 my-1">OnRoad Html</h4>
+                <svg class="run" onclick="updateIframe()" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="white " class="bi bi-play-fill"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" />
+                </svg>
             </div>
 
-            <button onclick="updateIframe()" class="btn btn-success run_btn">
+            <!-- <button onclick="updateIframe()" class="btn btn-success run_btn">
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="white " class="bi bi-play-fill"
                     viewBox="0 0 16 16">
                     <path
                         d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" />
                 </svg>
-            </button>
+            </button> -->
 
             <!-- <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
         aria-controls="offcanvasExample">
@@ -311,10 +372,43 @@
                     </label>
                 </div> -->
                 <div class="row">
-                    <div class="col-sm edi resz">
-                        <div id="editor"></div>
+                    <div class="col-sm edi resz" id="ediwindow">
+
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                          <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">HTML</button>
+                          </li>
+                          <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">CSS</button>
+                          </li>
+                          <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">JavaScript</button>
+                          </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                          <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                              <div id="editor"></div>
+                          </div>
+                          <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                              <div id="editorcss"></div>
+                          </div>
+                          <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+                              <div id="editorjs"></div>
+                          </div>
+                        </div>
+                        
+                        
+                        
                     </div>
                     <div class="col-sm resz" id="output_win">
+
+                        <div class="d-flex">
+                            <svg class="m-2 bc" onclick="backtohtml()"  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                          <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+                        </svg>
+                        <button class="btn">Output</button>
+                        </div>
+
                         <iframe id="myframe"></iframe>
                     </div>
                 </div>
@@ -382,10 +476,40 @@
 
 </body>
 <script>
+    function backtohtml(){
+        document.getElementById('output_win').style.display = "none";
+        document.getElementById('ediwindow').style.display = "block";
+    }
+
+    function res(){
+        document.getElementById("editorjs").style.display = "none";
+        document.getElementById("editorcss").style.display = "block";
+        document.getElementById("editor").style.display = "none";
+    }
+
+    function chagetojs(){
+        document.getElementById("editorjs").style.display = "block";
+        document.getElementById("editorcss").style.display = "none";
+        document.getElementById("editor").style.display = "none";
+    }
+
+
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/dracula");
     editor.session.setMode("ace/mode/html");
     document.getElementById("editor").style.fontSize = "15px";
+
+    var editorjs = ace.edit("editorjs");
+    editorjs.setTheme("ace/theme/dracula");
+    editorjs.session.setMode("ace/mode/javascript");
+    document.getElementById("editorjs").style.fontSize = "15px";
+
+    var editorcss = ace.edit("editorcss");
+    editorcss.setTheme("ace/theme/dracula");
+    editorcss.session.setMode("ace/mode/css");
+    document.getElementById("editorcss").style.fontSize = "15px";
+
+
     function mf() {
         alert(editor.getValue());
     }
@@ -395,32 +519,66 @@
         enableLiveAutocompletion: true
     });
 
+    editorcss.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: true
+    });
+
+    editorjs.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: true
+    });
+
     function run() {
         localStorage.setItem("code", editor.getValue());
+        localStorage.setItem("csscode", editorcss.getValue());
+        localStorage.setItem("jscode", editorjs.getValue());
         var myFrame = $("#myframe").contents().find("body");
         var textareaValue = editor.getValue();
-        myFrame.html(textareaValue);
+        var cssvalue = editorcss.getValue();
+        var jsvalue = editorjs.getValue();
+        myFrame.html(`<style>${cssvalue}</style>`+textareaValue);
+        var script = document.createElement("script");
+        script.text = jsvalue;
+        myFrame[0].appendChild(script);
     }
+
+
     document.getElementById("editor").onkeyup = () => run();
     var value = localStorage.getItem("code");
     editor.setValue(value);
 
+    document.getElementById("editorcss").onkeyup = () => run();
+    var value = localStorage.getItem("csscode");
+    editorcss.setValue(value);
+
+    document.getElementById("editorjs").onkeyup = () => run();
+    var value = localStorage.getItem("jscode");
+    editorjs.setValue(value);
+
     function setfun() {
         document.getElementById("s_dialog").style.display = "block";
     }
+
     function save_fun() {
         let font_s = document.getElementById("f_size").value;
         editor.setFontSize(font_s + "px");
+        editorcss.setFontSize(font_s + "px");
+        editorjs.setFontSize(font_s + "px");
         var select = document.getElementById("theme_n");
         var value = select.options[select.selectedIndex].value;
         editor.setTheme("ace/theme/" + value);
+        editorcss.setTheme("ace/theme/" + value);
+        editorjs.setTheme("ace/theme/" + value);
         document.getElementById("s_dialog").style.display = "none";
     }
 
     function updateIframe() {
-        var myFrame = $("#myframe").contents().find("body");
-        var textareaValue = editor.getValue();
-        myFrame.html(textareaValue);
+        document.getElementById('output_win').style.display = "block";
+        document.getElementById('ediwindow').style.display = "none";
+        run();
     }
 
     function savefile() {
