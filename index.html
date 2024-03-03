@@ -10,7 +10,7 @@
         content="OnRoad HTML, TollsSphere, Online code editor, HTML editor, Code editor, html editor, JS editor, New editor, HTML, Python, CSS, Java, C, C++, C#, jQuery, Bootstrap, Colors, W3.CSS, XML, MySQL, Icons, NodeJS, React, Graphics, Angular, R, AI, Git, Data Science, Code Game, Tutorials, Programming, Web Development" />
     <meta name="Description"
         content="Online HTML editor, Free Online HTML editor, Best online Html editor ? TollsSphere . A super fast and easy to use editor for your web project. A better online editor to craete your webpage and export your file. Super Fast editor for you" />
-    <meta property="og:image" content="https://onroadhtml.netlify.app/images/logo.png" />
+    <meta property="og:image" content="https://toolssphere.netlify.app/images/logo.png" />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="436" />
     <meta property="og:image:height" content="228" />
@@ -171,6 +171,13 @@
             right: 20px;
             bottom: 20px;
             z-index: 99999;
+            border-radius: 50%;
+            padding: 5px;
+            background-color: #19af69;
+            border: none ;
+        }
+        .run_btn>svg{
+            margin: 2px;
         }
 
         a {
@@ -242,8 +249,11 @@
             .left{
                 display: none;
             }
+            .run_btn{
+                display: none;
+            }
             .right .nav{
-                background-color: #131517;
+                /* background-color: #131517; */
                 color: #fff;
             }
             .bc{
@@ -329,13 +339,15 @@
                 </svg>
             </div>
 
-            <!-- <button onclick="updateIframe()" class="btn btn-success run_btn">
+
+            <a href="#myframe">
+            <button onclick="updateIframedesk()" class="run_btn">
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="white " class="bi bi-play-fill"
                     viewBox="0 0 16 16">
                     <path
                         d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" />
                 </svg>
-            </button> -->
+            </button></a>
 
             <!-- <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
         aria-controls="offcanvasExample">
@@ -434,7 +446,7 @@
                 <div class="form-check">
                     <input style="height: 15px; width: 15px;" class="form-check-input" type="checkbox" id="myCheck" onclick="theme_update()">
                     <label class="form-check-label" id="n_plate" for="myCheck">
-
+                        Enable Dark Mode
                     </label>
                 </div>
 
@@ -577,6 +589,9 @@
         document.getElementById('ediwindow').style.display = "none";
         run();
     }
+    function updateIframedesk(){
+        run();
+    }
 
     function savefile() {
         var textareaValue = editor.getValue();
@@ -621,6 +636,7 @@
     }
     function ori() {
         document.getElementById("myframe").style.width = "97vw";
+        document.getElementById("myframe").style.height = "100vh";
     }
     function ori_rv() {
         document.getElementById("myframe").style.width = "100%";
