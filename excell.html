@@ -13,6 +13,21 @@
       #excelSheets{
         overflow-x: auto;
       }
+      .centered-text {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 80vh;
+    }
+    .centered-text h1{
+        font-size: 10rem;
+        color: grey;
+        cursor: pointer;
+
+    }
+    .centered-text h1 label{
+        cursor: pointer;
+    }
   </style>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.2/xlsx.full.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -30,6 +45,9 @@
   <div id="sheetList" class="overflow-x-auto whitespace-nowrap my-3"></div>
   
   <div id="excelSheets" class="p-auto"></div>
+  <div id="new_text" class="centered-text">
+      <h1 class="hover:text-blue-900 "><label for="fileInput">+</label></h1>
+  </div>
 
   <script>
     document.getElementById('fileInput').addEventListener('change', handleFile);
@@ -67,6 +85,7 @@
       const sheet = workbook.Sheets[sheetName];
       const table = XLSX.utils.sheet_to_html(sheet);
       document.getElementById('excelSheets').innerHTML = table;
+      document.getElementById('new_text').style.display = none;
 
       // Make table cells resizable
       $('#excelSheets table').resizableColumns();
