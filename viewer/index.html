@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Excel Viewer</title>
+  <style type="text/css">
+      td{
+        border: 1px solid;
+        height: 30px;
+        resize: both;
+      }
+      #excelSheets{
+        overflow-x: auto;
+      }
+      .centered-text {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 80vh;
+    }
+    .centered-text h1{
+        font-size: 10rem;
+        color: grey;
+        cursor: pointer;
+
+    }
+    .centered-text h1 label{
+        cursor: pointer;
+    }
+  </style>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.2/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Resizable/3.1.3/Resizable.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<body class="">
+<nav class="bg-blue-600 p-4">
+    <input type="file" id="fileInput" accept=".xlsx, .xls" class="mb-4 hidden" />
+    <label for="fileInput" class="text-white p-4 hover:bg-blue-900 cursor-pointer">Open</label>
+</nav>
+  
+  
+  <div id="sheetList" class="overflow-x-auto whitespace-nowrap my-3"></div>
+  
+  <div id="excelSheets" class="p-auto"></div>
+  <div id="new_text" class="centered-text">
+      <h1 class="hover:text-blue-900 "><label for="fileInput">+</label></h1>
+  </div>
+
+  <script>
+    document.getElementById('fileInput').addEventListener('change', handleFile);
+
+    function handleFile(event) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      
+      reader.onload = function (e) {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, {type: 'array'});
+        let sheetListHTML = '<ul class="inline">';
+        workbook.SheetNames.forEach(function(sheetName) {
+          sheetListHTML += `<li class="inline-block mr-4"><span class="text-blue-600 cursor-pointer hover:underline sheetLink" data-sheetname="${sheetName}">${sheetName}</span></li>`;
+        });
+        sheetListHTML += '</ul>';
+        document.getElementById('sheetList').innerHTML = sheetListHTML;
+
+        const sheetLinks = document.querySelectorAll('.sheetLink');
+        sheetLinks.forEach(link => {
+          link.addEventListener('click', function() {
+            const sheetName = this.getAttribute('data-sheetname');
+            displaySheet(sheetName, workbook);
+          });
+        });
+
+        displaySheet(workbook.SheetNames[0], workbook);
+      };
+      
+      reader.readAsArrayBuffer(file);
+    }
+
+    function displaySheet(sheetName, workbook) {
+      workbook = workbook || globalWorkbook; // If workbook is not provided, use the global one
+      const sheet = workbook.Sheets[sheetName];
+      const table = XLSX.utils.sheet_to_html(sheet);
+      document.getElementById('excelSheets').innerHTML = table;
+      document.getElementById('new_text').style.display = 'none';
+
+      // Make table cells resizable
+      $('#excelSheets table').resizableColumns();
+    }
+  </script>
+</body>
+</html>
