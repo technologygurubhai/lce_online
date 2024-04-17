@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -308,7 +309,7 @@
                 <i class="material-icons" id="move_down" style="font-size:32px;">upload</i>
             </label>
             <h6>Upload</h6>
-            <input style="display:none;" class="inpt" type="file" id="file-input" accept=".html">
+            <input style="display:none;" class="inpt" type="file" id="file-input" accept=".akd">
 
             <i class="material-icons" id="move_down" style="font-size:26px;" onclick="savefile()">download</i>
             <h6>Download</h6>
@@ -593,36 +594,66 @@
         run();
     }
 
+    //var akdContent = `===index.html===\n${btoa(htmlContent)}\n===styles.css===\n${btoa(cssContent)}\n===script.js===\n${btoa(jsContent)}`;
+
+
+    // function savefile() {
+    //     var textareaValue = editor.getValue();
+    //     if ((promptFilename = prompt("Save file as", ""))) {
+    //         var textBlob = new Blob([textareaValue], { type: "text/plain" });
+    //         var downloadLink = document.createElement("a");
+    //         downloadLink.download = promptFilename;
+    //         downloadLink.innerHTML = "Download File";
+    //         downloadLink.href = window.URL.createObjectURL(textBlob);
+    //         downloadLink.click();
+    //         delete downloadLink;
+    //         delete textBlob;
+    //     }
+    // }
+
     function savefile() {
-        var textareaValue = editor.getValue();
-        if ((promptFilename = prompt("Save file as", ""))) {
-            var textBlob = new Blob([textareaValue], { type: "text/plain" });
-            var downloadLink = document.createElement("a");
-            downloadLink.download = promptFilename;
-            downloadLink.innerHTML = "Download File";
-            downloadLink.href = window.URL.createObjectURL(textBlob);
-            downloadLink.click();
-            delete downloadLink;
-            delete textBlob;
+    const html_Content = "This is an akd format...";
+    const htmlContent = editor.getValue();
+    const cssContent = editorcss.getValue();
+    const jsContent = editorjs.getValue();
+
+    const akdContent = `===${htmlContent}===\n${btoa(html_Content)}\n===${cssContent}===\n${btoa(html_Content)}\n===${jsContent}===\n${btoa(html_Content)}`;
+
+    if ((promptFilename = prompt("Save file as", ""))) {
+        const akdBlob = new Blob([akdContent], { type: "text/plain" });
+        const downloadLink = document.createElement("a");
+        downloadLink.download = promptFilename.endsWith(".akd") ? promptFilename : promptFilename + ".akd";
+        downloadLink.innerHTML = "Download .akd File";
+        downloadLink.href = window.URL.createObjectURL(akdBlob);
+        downloadLink.click();
+        delete downloadLink;
+        delete akdBlob;
+    }
+}
+
+
+
+    document.getElementById('file-input').addEventListener('change', handleFileSelect);
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                readAkdFile(file);
+            }
         }
-    }
 
-    function uploadFile() {
-        const fileInput = document.getElementById("file-input");
-        fileInput.click();
-    }
+        function readAkdFile(file) {
+            const reader = new FileReader();
+            reader.onload = function (ev) {
+                const akdData = ev.target.result;
+                const sections = akdData.split('===');
 
-    document.getElementById("file-input").addEventListener("change", function () {
-        const file = this.files[0];
-        const reader = new FileReader();
-
-        reader.onload = function (e) {
-            const contents = e.target.result;
-            editor.setValue(contents);
-        };
-
-        reader.readAsText(file);
-    });
+                // Populate text areas
+                editor.setValue(sections[1]);
+                editorcss.setValue(sections[3]);
+                editorjs.setValue(sections[5]);
+            };
+            reader.readAsText(file);
+        }
 
     function openass() {
         document.getElementById("asistent").style.display = "block";
