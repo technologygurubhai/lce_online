@@ -620,7 +620,7 @@
     const akdContent = `===${htmlContent}===\n${btoa(html_Content)}\n===${cssContent}===\n${btoa(html_Content)}\n===${jsContent}===\n${btoa(html_Content)}`;
 
     if ((promptFilename = prompt("Save file as", ""))) {
-        const akdBlob = new Blob([akdContent], { type: "text/plain" });
+        const akdBlob = new Blob([akdContent], { type: "application/akd" }); // Specify the file type as "application/akd"
         const downloadLink = document.createElement("a");
         downloadLink.download = promptFilename.endsWith(".akd") ? promptFilename : promptFilename + ".akd";
         downloadLink.innerHTML = "Download .akd File";
@@ -629,7 +629,7 @@
         delete downloadLink;
         delete akdBlob;
     }
-}
+    }
 
 
 
