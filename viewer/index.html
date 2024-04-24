@@ -1,95 +1,245 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Excel Viewer</title>
-  <style type="text/css">
-      td{
-        border: 1px solid;
-        height: 30px;
-        resize: both;
-      }
-      #excelSheets{
-        overflow-x: auto;
-      }
-      .centered-text {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 80vh;
-    }
-    .centered-text h1{
-        font-size: 10rem;
-        color: grey;
-        cursor: pointer;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel Viewer</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style type="text/css">
+        td {
+            border: 1px solid;
+            height: 30px;
+            resize: both;
+        }
 
-    }
-    .centered-text h1 label{
-        cursor: pointer;
-    }
-  </style>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.2/xlsx.full.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Resizable/3.1.3/Resizable.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+        .highlight {
+            background-color: yellow;
+        }
+
+        table {
+            margin: 10px;
+        }
+
+        .centered-text {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+        }
+
+        .centered-text h1 {
+            font-size: 10rem;
+            color: grey;
+            cursor: pointer;
+
+        }
+
+        .centered-text h1 label {
+            cursor: pointer;
+        }
+
+        #navbar {
+            position: fixed;
+            top: 0;
+            transition: top 0.3s;
+            width: 100%;
+        }
+
+        #sheetList {
+            margin-top: 60px;
+            padding: 15px;
+            margin-bottom: 0px;
+        }
+
+        .loader {
+            display: none;
+            color: rgb(37 99 235);
+            font-size: 45px;
+            text-indent: -9999em;
+            overflow: hidden;
+            width: 1em;
+            height: 1em;
+            border-radius: 50%;
+            position: relative;
+            transform: translateZ(0);
+            animation: mltShdSpin 1.7s infinite ease, round 1.7s infinite ease;
+        }
+
+        @keyframes mltShdSpin {
+            0% {
+                box-shadow: 0 -0.83em 0 -0.4em,
+                    0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em,
+                    0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+            }
+
+            5%,
+            95% {
+                box-shadow: 0 -0.83em 0 -0.4em,
+                    0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em,
+                    0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+            }
+
+            10%,
+            59% {
+                box-shadow: 0 -0.83em 0 -0.4em,
+                    -0.087em -0.825em 0 -0.42em, -0.173em -0.812em 0 -0.44em,
+                    -0.256em -0.789em 0 -0.46em, -0.297em -0.775em 0 -0.477em;
+            }
+
+            20% {
+                box-shadow: 0 -0.83em 0 -0.4em, -0.338em -0.758em 0 -0.42em,
+                    -0.555em -0.617em 0 -0.44em, -0.671em -0.488em 0 -0.46em,
+                    -0.749em -0.34em 0 -0.477em;
+            }
+
+            38% {
+                box-shadow: 0 -0.83em 0 -0.4em, -0.377em -0.74em 0 -0.42em,
+                    -0.645em -0.522em 0 -0.44em, -0.775em -0.297em 0 -0.46em,
+                    -0.82em -0.09em 0 -0.477em;
+            }
+
+            100% {
+                box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em,
+                    0 -0.83em 0 -0.44em, 0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+            }
+        }
+
+        @keyframes round {
+            0% {
+                transform: rotate(0deg)
+            }
+
+            100% {
+                transform: rotate(360deg)
+            }
+        }
+    </style>
+</head>
+
 <body class="">
-<nav class="bg-blue-600 p-4">
-    <input type="file" id="fileInput" accept=".xlsx, .xls" class="mb-4 hidden" />
-    <label for="fileInput" class="text-white p-4 hover:bg-blue-900 cursor-pointer">Open</label>
-</nav>
-  
-  
-  <div id="sheetList" class="overflow-x-auto whitespace-nowrap my-3"></div>
-  
-  <div id="excelSheets" class="p-auto"></div>
-  <div id="new_text" class="centered-text">
-      <h1 class="hover:text-blue-900 "><label for="fileInput">+</label></h1>
-  </div>
+    <nav id="navbar" class="bg-blue-600 p-4 flex justify-between">
+        <div>
+            <input type="file" id="fileInput" accept=".xlsx, .xls" class="mb-4 hidden" />
+            <label for="fileInput" class="text-white p-4 hover:bg-blue-900 cursor-pointer">Open <i class="fa fa-upload"
+                    aria-hidden="true"></i></label>
+        </div>
+        <div>
+            <input type="text" id="searchInput" class="px-2 py-1 rounded-md focus:outline-none" placeholder="Search...">
+        </div>
+    </nav>
 
-  <script>
-    document.getElementById('fileInput').addEventListener('change', handleFile);
+    <div id="sheetList" class="overflow-x-auto whitespace-nowrap my-3 mx-3"></div>
 
-    function handleFile(event) {
-      const file = event.target.files[0];
-      const reader = new FileReader();
-      
-      reader.onload = function (e) {
-        const data = new Uint8Array(e.target.result);
-        const workbook = XLSX.read(data, {type: 'array'});
-        let sheetListHTML = '<ul class="inline">';
-        workbook.SheetNames.forEach(function(sheetName) {
-          sheetListHTML += `<li class="inline-block mr-4"><span class="text-blue-600 cursor-pointer hover:underline sheetLink" data-sheetname="${sheetName}">${sheetName}</span></li>`;
-        });
-        sheetListHTML += '</ul>';
-        document.getElementById('sheetList').innerHTML = sheetListHTML;
+    <div id="excelSheets" class="mx-auto overflow-x-auto"></div>
+    <div id="new_text" class="centered-text">
 
-        const sheetLinks = document.querySelectorAll('.sheetLink');
-        sheetLinks.forEach(link => {
-          link.addEventListener('click', function() {
-            const sheetName = this.getAttribute('data-sheetname');
-            displaySheet(sheetName, workbook);
-          });
-        });
+        <span class="loader" id="loading_ani"></span>
+        <h1 class="hover:text-blue-900" id="plus_symbol">
 
-        displaySheet(workbook.SheetNames[0], workbook);
-      };
-      
-      reader.readAsArrayBuffer(file);
-    }
+            <label for="fileInput">+</label>
+        </h1>
+    </div>
 
-    function displaySheet(sheetName, workbook) {
-      workbook = workbook || globalWorkbook; // If workbook is not provided, use the global one
-      const sheet = workbook.Sheets[sheetName];
-      const table = XLSX.utils.sheet_to_html(sheet);
-      document.getElementById('excelSheets').innerHTML = table;
-      document.getElementById('new_text').style.display = 'none';
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.2/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Resizable/3.1.3/Resizable.min.js"></script>
+    <script>
+        document.getElementById('fileInput').addEventListener('change', handleFile);
+        document.getElementById('searchInput').addEventListener('input', handleSearch);
+        document.getElementById('fileInput').addEventListener('click', handleFileInputClick);
 
-      // Make table cells resizable
-      $('#excelSheets table').resizableColumns();
-    }
-  </script>
+        let globalWorkbook; // Define global variable to store workbook data
+
+        function handleFile(event) {
+            document.getElementById('loading_ani').style.display = 'none';
+            // alert("At opening");
+            const file = event.target.files[0];
+            if (!file) {
+
+                document.getElementById('loading_ani').style.display = 'none';
+                document.getElementById('plus_symbol').style.display = 'block';
+
+            }
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                let sheetListHTML = '<ul class="inline">';
+                workbook.SheetNames.forEach(function (sheetName) {
+                    sheetListHTML += `<li class="inline-block mr-4"><span class="text-blue-600 cursor-pointer hover:underline sheetLink" data-sheetname="${sheetName}">${sheetName}</span></li>`;
+                });
+                sheetListHTML += '</ul>';
+                document.getElementById('sheetList').innerHTML = sheetListHTML;
+
+                const sheetLinks = document.querySelectorAll('.sheetLink');
+                sheetLinks.forEach(link => {
+                    link.addEventListener('click', function () {
+                        const sheetName = this.getAttribute('data-sheetname');
+                        displaySheet(sheetName, workbook);
+                    });
+                });
+
+                globalWorkbook = workbook; // Store workbook data globally
+
+                displaySheet(workbook.SheetNames[0], workbook);
+            };
+
+            reader.readAsArrayBuffer(file);
+        }
+
+        function handleSearch() {
+            const searchText = this.value.trim().toLowerCase();
+            const tableCells = document.querySelectorAll('#excelSheets td');
+
+            if (searchText === '') {
+                tableCells.forEach(cell => {
+                    cell.classList.remove('highlight');
+                });
+                return; // Exit the function if search text is empty
+            }
+
+            tableCells.forEach(cell => {
+                const cellText = cell.textContent.trim().toLowerCase();
+                if (cellText.includes(searchText)) {
+                    cell.classList.add('highlight');
+                } else {
+                    cell.classList.remove('highlight');
+                }
+            });
+        }
+
+        var prevScrollpos = window.pageYOffset;
+        window.onscroll = function () {
+            var currentScrollPos = window.pageYOffset;
+            if (prevScrollpos > currentScrollPos) {
+                document.getElementById("navbar").style.top = "0";
+            } else {
+                document.getElementById("navbar").style.top = "-65px";
+            }
+            prevScrollpos = currentScrollPos;
+        }
+
+
+        function handleFileInputClick() {
+            document.getElementById('loading_ani').style.display = 'block';
+            document.getElementById('plus_symbol').style.display = 'none';
+        }
+        function displaySheet(sheetName, workbook) {
+            workbook = workbook || globalWorkbook; // If workbook is not provided, use the global one
+            const sheet = workbook.Sheets[sheetName];
+            const table = XLSX.utils.sheet_to_html(sheet);
+            document.getElementById('excelSheets').innerHTML = table;
+            document.getElementById('new_text').style.display = 'none';
+
+            $('#excelSheets table').resizableColumns();
+        }
+    </script>
 </body>
+
 </html>
