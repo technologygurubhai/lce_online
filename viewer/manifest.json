@@ -12,31 +12,31 @@
       "type": "image/png", "sizes": "72x72"
     },
     {
-      "src": "/images/logo.png",
+      "src": "/image/logo.png",
       "type": "image/png", "sizes": "96x96"
     },
     {
-      "src": "/images/logo.png",
+      "src": "/image/logo.png",
       "type": "image/png", "sizes": "128x128"
     },
     {
-      "src": "/images/logo.png",
+      "src": "/image/logo.png",
       "type": "image/png", "sizes": "144x144"
     },
     {
-      "src": "/images/logo.png",
+      "src": "/image/logo.png",
       "type": "image/png", "sizes": "152x152"
     },
     {
-      "src": "/images/logo.png",
+      "src": "/image/logo.png",
       "type": "image/png", "sizes": "192x192"
     },
     {
-      "src": "/images/icons/icon-384x384.png",
+      "src": "/image/logo.png",
       "type": "image/png", "sizes": "384x384"
     },
     {
-      "src": "/images/icons/icon-512x512.png",
+      "src": "/image/logo.png",
       "type": "image/png", "sizes": "512x512"
     }
   ]
