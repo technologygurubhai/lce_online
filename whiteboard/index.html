@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drawing Pad</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100 flex flex-col justify-center items-center">
+    <div class="w-full h-full flex flex-col justify-center items-center">
+        <div class="controls mb-4 flex justify-center">
+            <select id="color" class="mr-2">
+                <option value="#000000">Black</option>
+                <option value="#ff0000">Red</option>
+                <option value="#00ff00">Green</option>
+                <option value="#0000ff">Blue</option>
+            </select>
+            <select id="thickness" class="mr-2">
+                <option value="2">Thin</option>
+                <option value="5">Medium</option>
+                <option value="10">Thick</option>
+            </select>
+            <button id="drawModeButton" onclick="toggleDrawMode()" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                Drawing Mode
+            </button>
+            <button id="cleanButton" onclick="cleanCanvas()" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 ml-2">
+                Clean
+            </button>
+            <button id="convertButton" onclick="convertToImage()" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 ml-2">
+                Convert to Image
+            </button>
+        </div>
+
+        <canvas id="drawing-pad" class="border border-gray-400" width="800" height="500"></canvas>
+    </div>
+
+    <script>
+        // Get the canvas element
+        var canvas = document.getElementById("drawing-pad");
+        var ctx = canvas.getContext("2d");
+
+        // Initialize drawing variables
+        var isDrawing = false;
+        var lastX = 0;
+        var lastY = 0;
+        var drawMode = true;
+        var eraserSize = 20;
+
+        // Function to start drawing
+        function startDrawing(e) {
+            isDrawing = true;
+            [lastX, lastY] = [e.offsetX, e.offsetY];
+        }
+
+        // Function to draw
+        function draw(e) {
+            if (!isDrawing || !drawMode) return;
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(e.offsetX, e.offsetY);
+            ctx.strokeStyle = document.getElementById("color").value;
+            ctx.lineWidth = document.getElementById("thickness").value;
+            ctx.lineCap = "round";
+            ctx.lineJoin = "round";
+            ctx.stroke();
+            [lastX, lastY] = [e.offsetX, e.offsetY];
+        }
+
+        // Function to erase
+        function erase(e) {
+            if (!isDrawing || drawMode) return;
+            ctx.clearRect(e.offsetX - eraserSize / 2, e.offsetY - eraserSize / 2, eraserSize, eraserSize);
+        }
+
+        // Function to stop drawing
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+        // Function to toggle drawing mode
+        function toggleDrawMode() {
+            drawMode = !drawMode;
+            var drawModeButton = document.getElementById("drawModeButton");
+            drawModeButton.textContent = drawMode ? "Drawing Mode" : "Erasing Mode";
+        }
+
+        // Function to clean the canvas
+        function cleanCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        // Function to convert canvas to image and download
+        function convertToImage() {
+            var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+            var link = document.createElement("a");
+            link.download = "drawing.png";
+            link.href = image;
+            link.click();
+        }
+
+        // Event listeners
+        canvas.addEventListener("mousedown", startDrawing);
+        canvas.addEventListener("mousemove", function(e) {
+            draw(e);
+            erase(e);
+        });
+        canvas.addEventListener("mouseup", stopDrawing);
+        canvas.addEventListener("mouseout", stopDrawing);
+
+        // Adjust canvas size to fit screen
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // Function to draw an arrow
+        function drawArrow(x1, y1, x2, y2) {
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.strokeStyle = document.getElementById("color").value;
+            ctx.lineWidth = document.getElementById("thickness").value;
+            ctx.stroke();
+
+            var angle = Math.atan2(y2 - y1, x2 - x1);
+            var arrowSize = 10;
+            ctx.beginPath();
+            ctx.moveTo(x2, y2);
+            ctx.lineTo(x2 - arrowSize * Math.cos(angle - Math.PI / 6), y2 - arrowSize * Math.sin(angle - Math.PI / 6));
+            ctx.lineTo(x2 - arrowSize * Math.cos(angle + Math.PI / 6), y2 - arrowSize * Math.sin(angle + Math.PI / 6));
+            ctx.closePath();
+            ctx.fillStyle = document.getElementById("color").value;
+            ctx.fill();
+        }
+
+        // Function to draw a circle
+        function drawCircle(x, y, radius) {
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, 2 * Math.PI);
+            ctx.strokeStyle = document.getElementById("color").value;
+            ctx.lineWidth = document.getElementById("thickness").value;
+            ctx.stroke();
+        }
+
+        // Function to draw a rectangle
+        function drawRectangle(x, y, width, height) {
+            ctx.beginPath();
+            ctx.rect(x, y, width, height);
+            ctx.strokeStyle = document.getElementById("color").value;
+            ctx.lineWidth = document.getElementById("thickness").value;
+            ctx.stroke();
+        }
+
+        // Function to draw a square
+        function drawSquare(x, y, size) {
+            drawRectangle(x, y, size, size);
+        }
+
+        // Example usage:
+        // drawArrow(50, 50, 200, 200);
+        // drawCircle(300, 300, 50);
+        // drawRectangle(400, 100, 100, 50);
+        // drawSquare(500, 300, 100);
+    </script>
+</body>
+
+</html>
