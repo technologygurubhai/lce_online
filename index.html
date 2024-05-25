@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -303,6 +304,56 @@
 </head>
 
 <body id="main_body">
+
+
+    <!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Launch demo modal
+</button> -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Settings</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div>
+                    <p>Font Size</p>
+                    <input class="form-control" value="15" type="number" id="f_size" />
+                    <p>Choose mode</p>
+                    <select class="form-control" id="theme_n">
+                        <option value="dracula">Dracula</option>
+                        <option value="github">Github</option>
+                        <option value="solarized_light">Solarized Light</option>
+                        <option value="iplastic">Iplastic</option>
+                        <option value="clouds">Clouds</option>
+                        <option value="monokai">Monokai</option>
+                        <option value="chrome">Chrome</option>
+                        <option value="pastel_on_dark">Pastel On Dark</option>
+                    </select>
+                    <br />
+                </div>
+                <div class="form-check">
+                    <input style="height: 15px; width: 15px;" class="form-check-input" type="checkbox" id="myCheck" onclick="theme_update()">
+                    <label class="form-check-label" id="n_plate" for="myCheck">
+                        Enable Dark Mode
+                    </label>
+                </div>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="save_fun()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
     <div class="main_alg">
         <div class="left p-2">
             <label for="file-input">
@@ -314,7 +365,7 @@
             <i class="material-icons" id="move_down" style="font-size:26px;" onclick="savefile()">download</i>
             <h6>Download</h6>
 
-            <i class="material-icons" id="move_down" style="font-size:26px;" onclick="setfun()">settings</i>
+            <i class="material-icons" id="move_down" style="font-size:26px;" data-bs-toggle="modal" data-bs-target="#exampleModal">settings</i>
             <h6>Settings</h6>
 
             <i class="material-icons" id="move_down" style="font-size:26px;" onclick="ori()">move_down</i>
@@ -368,7 +419,7 @@
                         <li class="list-group-item m-1" style="display: flex;"><i class="material-icons mx-2" style="font-size:32px;">upload</i>
                              Upload Code </li></label>
                         <li class="list-group-item m-1" style="display: flex;" onclick="savefile()"><i class="material-icons mx-2" style="font-size:32px;">download</i> Download Code</li>
-                        <li class="list-group-item m-1" style="display: flex;" onclick="setfun()"><i class="material-icons mx-2" style="font-size:32px;">settings</i> Settings</li>
+                        <li class="list-group-item m-1" style="display: flex;" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="material-icons mx-2" style="font-size:32px;">settings</i> Settings</li>
                     </ul>
                 </div>
             </div>
