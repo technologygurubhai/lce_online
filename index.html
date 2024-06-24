@@ -718,31 +718,36 @@
     document.getElementById("foot").style.display = "none";
 
     function theme_update() {
-        var checkBox = document.getElementById("myCheck");
-        var text = document.getElementById("n_plate");
-        var bdy = document.getElementById("main_body");
-        if (checkBox.checked == true) {
-            text.innerHTML = "Disable Dark Mode";
-            bdy.setAttribute("data-bs-theme", "dark");
-            localStorage.setItem("main_theme", "dark");
-        } else {
-            text.innerHTML = "Enable Dark Mode";
-            bdy.setAttribute("data-bs-theme", "light");
-            localStorage.setItem("main_theme", "light");
+            const checkBox = document.getElementById("myCheck");
+            const text = document.getElementById("n_plate");
+            const bdy = document.getElementById("main_body");
+            if (checkBox.checked) {
+                text.innerHTML = "Disable Dark Mode";
+                bdy.setAttribute("data-bs-theme", "dark");
+                localStorage.setItem("main_theme", "dark");
+            } else {
+                text.innerHTML = "Enable Dark Mode";
+                bdy.setAttribute("data-bs-theme", "light");
+                localStorage.setItem("main_theme", "light");
+            }
         }
-    }
-    var main_theme = localStorage.getItem("main_theme");
-    var bdy = document.getElementById("main_body");
-    if (localStorage.getItem("main_theme") == "dark") {
-        bdy.setAttribute("data-bs-theme", "dark");
-        document.getElementById("myCheck").checked = true;
-        document.getElementById("n_plate").innerHTML = "Disable Dark Mode";
-    }
-    else {
-        bdy.setAttribute("data-bs-theme", "light");
-        document.getElementById("myCheck").checked = false;
-        document.getElementById("n_plate").innerHTML = "Enable Dark Mode";
-    }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const main_theme = localStorage.getItem("main_theme");
+            const bdy = document.getElementById("main_body");
+            const checkBox = document.getElementById("myCheck");
+            const text = document.getElementById("n_plate");
+
+            if (main_theme === "dark") {
+                bdy.setAttribute("data-bs-theme", "dark");
+                checkBox.checked = true;
+                text.innerHTML = "Disable Dark Mode";
+            } else {
+                bdy.setAttribute("data-bs-theme", "light");
+                checkBox.checked = false;
+                text.innerHTML = "Enable Dark Mode";
+            }
+        });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
     integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
